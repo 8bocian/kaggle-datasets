@@ -46,5 +46,6 @@ params = {
 grid_search = GridSearchCV(estimator=forest_clf, param_grid=params, cv=3, verbose=2, scoring='neg_mean_squared_error')
 grid_search.fit(X_train, y_train)
 y_pred = grid_search.predict(X_test)
+
 print(grid_search.best_params_)
 print(mean_squared_error(y_true=y_test, y_pred=y_pred))
