@@ -1,5 +1,4 @@
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
 import keras.losses
@@ -83,7 +82,7 @@ model = keras.Model(inputs=inputs, outputs=outputs)
 print(model.summary())
 model.compile(
     loss=keras.losses.SparseCategoricalCrossentropy(),
-    optimizer=keras.optimizers.Adam(),
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
     metrics=[keras.metrics.SparseCategoricalAccuracy()],
 )
 
@@ -91,29 +90,12 @@ model.fit(X_train, y_train, epochs=50, batch_size=16)
 model.evaluate(X_test, y_test, verbose=2)
 y_pred = model.predict(X_test)
 y_pred = [np.argmax(row) for row in y_pred]
-print(y_test[:3])
-print(y_pred[:3])
+
+print(classification_report(y_test, y_pred))
+
 cf_matrix = confusion_matrix(y_test, y_pred)
 seaborn.heatmap(cf_matrix, annot=True)
 plt.show()
-print(classification_report(y_test, y_pred))
-#
-# param_grid = {
-#     'bootstrap': [True, False],
-#     'max_depth': [50, 70, 90, 110],
-#     'max_features': [2, 4, 6],
-#     'min_samples_leaf': [3, 5, 7],
-#     'min_samples_split': [10, 12, 14],
-#     'n_estimators': [100, 200, 300, 400, 500]
-# }
-#
-# forest_clf = RandomForestClassifier()
-# grid_search = GridSearchCV(estimator=forest_clf, param_grid=param_grid, cv=3, n_jobs=-1, verbose=2, scoring='accuracy')
-#
-# grid_search.fit(X_train, y_train)
-# y_pred = grid_search.predict(X_test)
-#
-# print(classification_report(y_test,y_pred))
 
 # Dataset Link
 # https://www.kaggle.com/datasets/cid007/mental-disorder-classification/data
